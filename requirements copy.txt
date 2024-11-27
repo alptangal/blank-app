@@ -1,0 +1,16 @@
+websockets
+requests
+bs4
+discord
+aiohttp
+msgpack
+flask
+g4f
+nest-asyncio
+python-dotenv
+gradio==4.43.0
+asyncio
+fastapi==0.112.2
+yt_dlp
+cookies
+colorama
