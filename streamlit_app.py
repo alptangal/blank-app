@@ -4,15 +4,6 @@ import requests
 import datetime
 import traceback
 
-'''try:
-    req=requests.get('http://localhost:8000')
-    print(req)
-    if 'hello' not in req.text:
-        raise Exception("Server not response")
-    sys.exit("Exited")
-except Exception as error:
-    traceback.print_exc()
-    subprocess.run(['uvicorn','app:app', '--reload'])'''
 
 if not hasattr(st, 'already_started_server'):
     # Hack the fact that Python modules (like st) only load once to
