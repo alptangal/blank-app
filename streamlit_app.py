@@ -6,6 +6,7 @@ import traceback
 
 try:
     req=requests.get('http://localhost:8000')
+    print(req)
     if int(str(datetime.datetime.now().timestamp()).split('.')[0])-int(req.text.split('.')[0])>=10:
         raise Exception("Server not response")
     sys.exit("Exited")
