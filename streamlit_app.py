@@ -1,38 +1,26 @@
+# This code adds custom REST api handler at runtime to a running Streamlit app
+#
+
+from tornado.web import Application, RequestHandler
+from tornado.routing import Rule, PathMatches
+import gc
 import streamlit as st
-import subprocess,sys
-import requests
-import datetime
-import traceback
 
-try:
-    req=requests.get('http://localhost:8000')
-    print(req)
-    if 'hello' not in req.text:
-        raise Exception("Server not response")
-    sys.exit("Exited")
-except Exception as error:
-    traceback.print_exc()
-    subprocess.run(['uvicorn','app:app', '--reload'])
 
-if not hasattr(st, 'already_started_server'):
-    # Hack the fact that Python modules (like st) only load once to
-    # keep track of whether this file already ran.
-    st.already_started_server = True
+@st.cache_resource()
+def setup_api_handler(uri, handler):
+    print("Setup Tornado. Should be called only once")
 
-    st.write('''
-        The first time this script executes it will run forever because it's
-        running a Flask server.
+    # Get instance of Tornado
+    tornado_app = next(o for o in gc.get_referrers(Application) if o.__class__ is Application)
 
-        Just close this browser tab and open a new one to see your Streamlit
-        app.
-    ''')
+    # Setup custom handler
+    tornado_app.wildcard_router.rules.insert(0, Rule(PathMatches(uri), handler))
+    
+# === Usage ======
+class HelloHandler(RequestHandler):
+  def get(self):
+    self.write({'message': 'hello world'})
 
-    from flask import Flask
-
-    app = Flask(__name__)
-
-    @app.route('/foo')
-    def serve_foo():
-        return 'This page is served via Flask!'
-
-    app.run(port=8888)
+# This setup will be run only once
+setup_api_handler('/api/hello', HelloHandler)
