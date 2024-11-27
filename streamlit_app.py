@@ -1,7 +1,7 @@
 import streamlit as st
 import subprocess
 
-subprocess.run(['uvicorn','fastapi_app:app', '--reload'])
+subprocess.run(['uvicorn','app:app', '--reload'])
 
 st.title("🎈 My new app")
 st.write(
