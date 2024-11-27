@@ -17,6 +17,7 @@ from pydantic import BaseModel
 from contextlib import asynccontextmanager
 load_dotenv()
 
+print(111111)
 APP_TOKEN=os.getenv('lark_base_token').strip().replace("'",'"')
 APP_ID=os.getenv('lark_app_id').strip().replace("'",'"')
 APP_SECRET=os.getenv('lark_app_secret').strip().replace("'",'"')
